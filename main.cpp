@@ -69,10 +69,8 @@ int main(int argc, char *argv[])
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym)
 				{
-					//case SDLK_LEFT : rect1.x -= rectSpeed ; break;
-					//case SDLK_RIGHT : rect1.x += rectSpeed ; break;
+					case SDLK_q : return 1 ; break;
 					case SDLK_SPACE : rect1.y -= rectSpeed ; break;
-					//case SDLK_DOWN : rect1.y += rectSpeed ; break;
 				}
 		}
 
@@ -126,8 +124,8 @@ int main(int argc, char *argv[])
 		{
 			score++;
 			canScore = false;
-			char scoreString = static_cast<char>(score);
-			SDL_Surface *text = text = TTF_RenderText_Solid(font, *scoreString, textColor);
+			//char scoreString = static_cast<char>(score);
+			SDL_Surface *text = text = TTF_RenderText_Solid(font, /**scoreString*/ "Hello World!", textColor);
 			SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, text);
 			SDL_FreeSurface(text);
 		}
