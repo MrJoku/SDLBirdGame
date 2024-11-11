@@ -159,13 +159,13 @@ int main(int argc, char *argv[])
 
 
 		// FPS CAP
-		/*float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
+		float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
 
-		float delayTime = 50.0f - elapsedMS;
+		float delayTime = 16.666f - elapsedMS;
 		if (delayTime > 0)
 		{
 		    SDL_Delay((Uint32)delayTime);
 		}
-		cout << delayTime << "\n";*/
+		cout << delayTime << "\n";
 	}
 }
