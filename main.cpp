@@ -18,18 +18,25 @@ int main(int argc, char *argv[])
 	SDL_Texture *texture = IMG_LoadTexture(renderer, "bird.png");
 	
 	
-	//text
+	// score text
 	TTF_Font* font;
 	font = TTF_OpenFont("mononoki.ttf", 24);
 	SDL_Color textColor = {255, 0, 0, 255};
+	
 	SDL_Surface *text = TTF_RenderText_Solid(font, "0", textColor);
 	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, text);
 	SDL_FreeSurface(text);
 	SDL_Rect textRect = {0, 0, text->w, text->h};
 
+	// fps text
+	SDL_Surface *fpsText = TTF_RenderText_Solid(font, "0", textColor);
+	SDL_Texture *fpsTextTexture = SDL_CreateTextureFromSurface(renderer, fpsText);
+	SDL_FreeSurface(fpsText);
+	SDL_Rect fpsTextRect = {100, 0, fpsText->w, fpsText->h};
+
 	int rectSpeed = 60;
-	int fallingSpeed = 1;
-	int pipeSpeed = 2;
+	float fallingSpeed = 0.2;
+	float pipeSpeed = 0.3;
 	int x = 300;
 	int y = 200;
 	int score = 0;
@@ -51,13 +58,26 @@ int main(int argc, char *argv[])
 	bool canScore = true;
 	bool close = false;
 	SDL_Event event;
+
+
+	Uint64 NOW = SDL_GetPerformanceCounter();
+	Uint64 LAST = 0;
+
+	double deltaTime = 0;
+
 	while (!close)
 	{
-		cout << SDL_GetTicks() << "\n";
-		rect1.y += 1;
-		pipe1.x -= pipeSpeed;
-		pipe2.x -= pipeSpeed;
-		pointColl.x -= pipeSpeed;
+		Uint64 start = SDL_GetPerformanceCounter();
+		// very cool deltatime
+		LAST = NOW;
+		NOW = SDL_GetPerformanceCounter();
+		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
+
+
+		rect1.y += fallingSpeed * deltaTime;
+		pipe1.x -= pipeSpeed * deltaTime;
+		pipe2.x -= pipeSpeed * deltaTime;
+		pointColl.x -= pipeSpeed * deltaTime;
 		// INPUT
 		SDL_PollEvent(&event);
 		switch (event.type)
@@ -88,6 +108,7 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255);
 		SDL_RenderFillRect(renderer, &pipe1);
 		SDL_RenderFillRect(renderer, &pipe2);
+		SDL_RenderFillRect(renderer, &textRect);
 
 		SDL_bool floorColl = SDL_HasIntersection(&rect1, &rect2);
 		SDL_bool pipeColl1 = SDL_HasIntersection(&rect1, &pipe1);
@@ -118,11 +139,25 @@ int main(int argc, char *argv[])
 			textTexture = SDL_CreateTextureFromSurface(renderer, text);
 			SDL_FreeSurface(text);
 			textRect = {0, 0, text->w, text->h};
-
 			canScore = false;
 		}
+		
+		float elapsed;
+
+		cout << "Current FPS: " << to_string(1.0f / elapsed) << endl;
+		SDL_Surface *fpsText = TTF_RenderText_Solid(font, to_string(static_cast<int>(round(1.0f/elapsed))).c_str(), textColor);
+		SDL_Texture *fpsTextTexture = SDL_CreateTextureFromSurface(renderer, fpsText);
+		SDL_FreeSurface(fpsText);
+		SDL_Rect fpsTextRect = {100, 0, fpsText->w, fpsText->h};
 
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+		SDL_RenderCopy(renderer, fpsTextTexture, NULL, &fpsTextRect);
+
 		SDL_RenderPresent(renderer);
+		Uint64 end = SDL_GetPerformanceCounter();
+
+		elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+
+		
 	}
 }
