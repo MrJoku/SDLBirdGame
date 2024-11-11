@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	// score text
 	TTF_Font* font;
 	font = TTF_OpenFont("mononoki.ttf", 24);
-	SDL_Color textColor = {255, 0, 0, 255};
+	SDL_Color textColor = {0, 0, 0, 255};
 	
 	SDL_Surface *text = TTF_RenderText_Solid(font, "0", textColor);
 	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, text);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	int pipe2Y = 380;
 	SDL_Rect pipe2 = {pipe2X, pipe2Y, 100, 200};
 
-	SDL_Rect pipeMove = {0, 0, 10, 640};
+	SDL_Rect pipeMove = {-100, 0, 10, 640};
 
 	SDL_Rect pointColl = {pipe1X, 0, 100, 480};
 	bool canScore = true;
@@ -108,7 +108,6 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255);
 		SDL_RenderFillRect(renderer, &pipe1);
 		SDL_RenderFillRect(renderer, &pipe2);
-		SDL_RenderFillRect(renderer, &textRect);
 
 		SDL_bool floorColl = SDL_HasIntersection(&rect1, &rect2);
 		SDL_bool pipeColl1 = SDL_HasIntersection(&rect1, &pipe1);
