@@ -5,7 +5,6 @@
 #include <SDL2/SDL_ttf.h>
 
 using namespace std;
-
 int main(int argc, char *argv[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -17,8 +16,7 @@ int main(int argc, char *argv[])
 
 	SDL_Texture *texture = IMG_LoadTexture(renderer, "bird.png");
 	
-	
-	// score text
+	// SCORE TEXT
 	TTF_Font* font;
 	font = TTF_OpenFont("mononoki.ttf", 24);
 	SDL_Color textColor = {0, 0, 0, 255};
@@ -28,7 +26,7 @@ int main(int argc, char *argv[])
 	SDL_FreeSurface(text);
 	SDL_Rect textRect = {0, 0, text->w, text->h};
 
-	// fps text
+	// FPS TEXT
 	SDL_Surface *fpsText = TTF_RenderText_Solid(font, "0", textColor);
 	SDL_Texture *fpsTextTexture = SDL_CreateTextureFromSurface(renderer, fpsText);
 	SDL_FreeSurface(fpsText);
@@ -142,8 +140,10 @@ int main(int argc, char *argv[])
 		}
 		
 		float elapsed;
-
-		cout << "Current FPS: " << to_string(1.0f / elapsed) << endl;
+			
+		// PRINT FPS
+		//cout << "Current FPS: " << to_string(1.0f / elapsed) << endl;
+		//
 		SDL_Surface *fpsText = TTF_RenderText_Solid(font, to_string(static_cast<int>(round(1.0f/elapsed))).c_str(), textColor);
 		SDL_Texture *fpsTextTexture = SDL_CreateTextureFromSurface(renderer, fpsText);
 		SDL_FreeSurface(fpsText);
@@ -157,6 +157,15 @@ int main(int argc, char *argv[])
 
 		elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
 
-		
+
+		// FPS CAP
+		/*float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
+
+		float delayTime = 50.0f - elapsedMS;
+		if (delayTime > 0)
+		{
+		    SDL_Delay((Uint32)delayTime);
+		}
+		cout << delayTime << "\n";*/
 	}
 }
