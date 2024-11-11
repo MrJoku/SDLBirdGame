@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
 	TTF_Font* font;
 	font = TTF_OpenFont("mononoki.ttf", 24);
 	SDL_Color textColor = {255, 0, 0, 255};
-	SDL_Surface *text = text = TTF_RenderText_Solid(font, "Hello world!", textColor);
+	SDL_Surface *text = TTF_RenderText_Solid(font, "0", textColor);
 	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, text);
 	SDL_FreeSurface(text);
-	SDL_Rect textRect = {0, 0, text->w, text->h};	
+	SDL_Rect textRect = {0, 0, text->w, text->h};
 
 	int rectSpeed = 60;
 	int fallingSpeed = 1;
@@ -123,11 +123,13 @@ int main(int argc, char *argv[])
 		if (scoreColl && canScore)
 		{
 			score++;
-			canScore = false;
 			//char scoreString = static_cast<char>(score);
-			SDL_Surface *text = text = TTF_RenderText_Solid(font, /**scoreString*/ "Hello World!", textColor);
-			SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, text);
+			text = TTF_RenderText_Solid(font, to_string(score).c_str(), textColor);
+			textTexture = SDL_CreateTextureFromSurface(renderer, text);
 			SDL_FreeSurface(text);
+			textRect = {0, 0, text->w, text->h};
+
+			canScore = false;
 		}
 
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
