@@ -79,9 +79,6 @@ int main(int argc, char *argv[])
 		SDL_RenderClear(renderer);
 
 		// BIRD RECT
-		//SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255);
-		//SDL_RenderFillRect(renderer, &rect1);
-		//SDL_RenderCopy(renderer, texture, NULL, &rect1);
 		SDL_RenderCopyEx(renderer, texture, NULL, &rect1, 8 + rect1.y, NULL, SDL_FLIP_NONE);
 
 
@@ -91,8 +88,6 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255);
 		SDL_RenderFillRect(renderer, &pipe1);
 		SDL_RenderFillRect(renderer, &pipe2);
-		//SDL_RenderFillRect(renderer, &pipeMove);
-		//SDL_RenderFillRect(renderer, &pointColl);
 
 		SDL_bool floorColl = SDL_HasIntersection(&rect1, &rect2);
 		SDL_bool pipeColl1 = SDL_HasIntersection(&rect1, &pipe1);
@@ -102,12 +97,9 @@ int main(int argc, char *argv[])
 		SDL_bool pipe1Move = SDL_HasIntersection(&pipe1, &pipeMove);
 		if (floorColl || pipeColl1 || pipeColl2)
 		{
-			//SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
 			cout << "\nScore " << score << "\n";
 			return 1;
 		}
-		/*else
-			SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);*/
 
 		if (pipe1Move)
 		{
@@ -116,14 +108,12 @@ int main(int argc, char *argv[])
 			pipe1.y = -100 + rand() % 101;
 			pipe2.y = 280 + rand() % 101;
 			pointColl.x = 660;
-			//cout << pipe1.y << "\n" << pipe2.y << "\n";
 			canScore = true;
 		}
 
 		if (scoreColl && canScore)
 		{
 			score++;
-			//char scoreString = static_cast<char>(score);
 			text = TTF_RenderText_Solid(font, to_string(score).c_str(), textColor);
 			textTexture = SDL_CreateTextureFromSurface(renderer, text);
 			SDL_FreeSurface(text);
